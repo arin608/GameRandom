@@ -24,7 +24,8 @@ public class GameController {
     		
     		switch (choice) {
     		case 1:
-    			playGame("사자성어 맞추기");
+    			consoleView.promptUsername();
+    			startGame();
     			break;
     		case 2:
     			playGame("속담 맞추기");
