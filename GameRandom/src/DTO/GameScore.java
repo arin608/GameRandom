@@ -30,4 +30,17 @@ public class GameScore {
             consoleView.displayMessage(user.getUsername() + ": " + user.getScore() + "점");
         }
     }
+    
+    public boolean hasUser(String username) {
+        return users.containsKey(username);
+    }
+
+    public void removeUser(String username) {
+        if (hasUser(username)) {
+            users.remove(username);
+            System.out.println(username + "님의 정보가 삭제되었습니다.");
+        } else {
+            System.out.println("해당 유저를 찾을 수 없습니다.");
+        }
+    }
 }

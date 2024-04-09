@@ -15,8 +15,38 @@ public class GameController {
         this.consoleView = consoleView;
         this.random = new Random();
     }
-
+    
     public void startProgram() {
+    	boolean running = true;
+    	
+    	while (running) {
+    		int choice = consoleView.UserInformationSelection();
+    		
+    		switch (choice) {
+    		case 1:
+    			playGame("사자성어 맞추기");
+    			break;
+    		case 2:
+    			playGame("속담 맞추기");
+    			break;
+    		case 3:
+    			playGame("초성 게임");
+    			break;
+    		case 4:
+    			gameScore.displayAllUsers(consoleView);
+    			break;
+    		case 5:
+    			consoleView.displayMessage("프로그램을 종료합니다.");
+    			running = false;
+    			break;
+    		default:
+    			consoleView.displayMessage("잘못된 선택입니다. 다시 선택해주세요.");
+    			break;
+    		}
+    	}
+    }
+
+    public void startGame() {
         boolean running = true;
 
         while (running) {
