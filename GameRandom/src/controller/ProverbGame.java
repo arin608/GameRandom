@@ -1,6 +1,7 @@
 package controller;
 
 import DTO.GameScore;
+import DTO.User;
 import View.ConsoleView;
 
 import java.util.HashMap;
@@ -32,13 +33,13 @@ public class ProverbGame implements Game {
         consoleView.displayMessage("다음 속담의 앞 부분은? " + firstPart);
         consoleView.displayMessage("속담의 뒷 부분을 맞춰보세요: " + hiddenPart);
 
-        boolean correct = playGameAndGetResult(answer);
+        boolean correct = playGameAndGetResult(username, answer); // username을 전달하여 호출
         updateScore(username, correct);
     }
 
     private void initializeProverbMap() {
         // 사자성어 게임을 위한 사자성어와 뒷 부분 매핑 초기화
-        proverbMap.put("호랑이 담 넘어가듯 한다", "넘어가듯 한다");
+        proverbMap.put("호랑이 담 넘어가듯 한다", "담 넘어가듯 한다");
         proverbMap.put("백지장도 맞들면 낫다", "맞들면 낫다");
         proverbMap.put("배보다 배꼽이 더 크다", "배꼽이 더 크다");
         proverbMap.put("남의 재주 따라하지 말고 자기 재주를 내라", "자기 재주를 내라");
@@ -62,31 +63,45 @@ public class ProverbGame implements Game {
         return hidden.toString();
     }
 
-    private boolean playGameAndGetResult(String answer) {
+    private boolean playGameAndGetResult(String username, String answer) {
         int attempts = 5;
 
         while (attempts > 0) {
             String userAnswer = consoleView.promptAnswer();
+            // 사용자의 답변과 정답의 뒷부분을 대소문자 구분 없이 비교
+            String actualAnswer = answer.substring(answer.lastIndexOf(' ') + 1); // 정답의 뒷부분만 추출
 
             if (userAnswer.equalsIgnoreCase(answer)) {
                 consoleView.displayMessage("정답입니다! 300점 획득!");
+                updateScore(username, true); // 정답인 경우 점수 업데이트
                 return true;
             } else {
-                consoleView.displayMessage("틀렸습니다. 다시 시도하세요.");
+                consoleView.displayMessage("틀렸습니다. 다시 시도하세요. 남은 횟수: " + (attempts - 1));
                 attempts--;
             }
         }
 
-        consoleView.displayMessage("정답은 '" + answer + "' 입니다.");
+        consoleView.displayMessage("시도 횟수를 모두 소진했습니다. 정답은 '" + answer + "'입니다.");
+        updateScore(username, false); // 정답을 못 맞춘 경우 점수 업데이트
         return false;
     }
 
     private void updateScore(String username, boolean correct) {
-        int currentScore = gameScore.getUser(username).getScore();
-        if (correct) {
-            gameScore.updateUser(username, currentScore + 300);
+    	
+    	User user = gameScore.getUser(username);
+
+        if (user != null) { // 사용자 정보가 null이 아닌 경우에만 점수를 업데이트
+            int currentScore = user.getScore();
+
+            if (correct) {
+                gameScore.updateUser(username, currentScore + 300);
+            } else {
+                gameScore.updateUser(username, currentScore - 50);
+            }
         } else {
-            gameScore.updateUser(username, currentScore - 50);
+            // 사용자 정보가 null인 경우에 대한 처리
+            System.out.println("사용자 정보를 찾을 수 없습니다: " + username);
         }
     }
+
 }

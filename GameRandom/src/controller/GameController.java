@@ -28,10 +28,11 @@ public class GameController {
     			startGame();
     			break;
     		case 2:
-    			playGame("속담 맞추기");
+    			consoleView.promptUsername();
+    			startGame();
     			break;
     		case 3:
-    			playGame("초성 게임");
+    			consoleView.promptUsername();
     			break;
     		case 4:
     			gameScore.displayAllUsers(consoleView);
@@ -64,9 +65,6 @@ public class GameController {
                     playGame("초성 게임");
                     break;
                 case 4:
-                    gameScore.displayAllUsers(consoleView);
-                    break;
-                case 5:
                     consoleView.displayMessage("프로그램을 종료합니다.");
                     running = false;
                     break;

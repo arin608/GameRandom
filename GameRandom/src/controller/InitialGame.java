@@ -1,6 +1,7 @@
 package controller;
 
 import DTO.GameScore;
+import DTO.User;
 import View.ConsoleView;
 
 import java.util.HashMap;
@@ -69,11 +70,20 @@ public class InitialGame implements Game {
     }
 
     private void updateScore(String username, boolean correct) {
-        int currentScore = gameScore.getUser(username).getScore();
-        if (correct) {
-            gameScore.updateUser(username, currentScore + 300);
+        User user = gameScore.getUser(username);
+
+        if (user != null) { // 사용자 정보가 null이 아닌 경우에만 점수를 업데이트
+            int currentScore = user.getScore();
+
+            if (correct) {
+                gameScore.updateUser(username, currentScore + 300);
+            } else {
+                gameScore.updateUser(username, currentScore - 50);
+            }
         } else {
-            gameScore.updateUser(username, currentScore - 50);
+            // 사용자 정보가 null인 경우에 대한 처리
+            System.out.println("사용자 정보를 찾을 수 없습니다: " + username);
         }
     }
+
 }

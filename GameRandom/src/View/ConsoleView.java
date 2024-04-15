@@ -10,8 +10,9 @@ public class ConsoleView {
     }
 
     public String promptUsername() {
-        System.out.print("닉네임을 입력하세요: ");
-        return scanner.nextLine(); // 입력 버퍼를 비우기 위해 nextLine() 호출
+        System.out.print("새로운 닉네임을 입력하세요: ");
+        String nickname = scanner.nextLine(); // 입력 버퍼를 비우기 위해 nextLine() 호출
+        return nickname;
     }
     
     
