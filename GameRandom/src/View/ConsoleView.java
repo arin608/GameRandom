@@ -9,13 +9,15 @@ public class ConsoleView {
         this.scanner = new Scanner(System.in);
     }
 
-    public String promptUsername() {
-        System.out.print("새로운 닉네임을 입력하세요: ");
-        String nickname = scanner.nextLine(); // 입력 버퍼를 비우기 위해 nextLine() 호출
-        return nickname;
+    public String promptUsername(boolean isNewUsername) {
+        if (isNewUsername) {
+            System.out.print("새로운 닉네임을 입력하세요: ");
+        } else {
+            System.out.print("닉네임을 수정하세요: ");
+        }
+        return scanner.nextLine(); // 입력 버퍼를 비우기 위해 nextLine() 호출
     }
-    
-    
+
     public int UserInformationSelection() {
     	System.out.println("=== 메뉴 선택 ===");
     	System.out.println("1. 유저 정보(닉네임) 입력");
