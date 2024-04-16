@@ -29,10 +29,6 @@ public class IdiomGame implements Game {
 
         String firstPart = idiom.substring(0, 2); // 앞의 2글자만 추출
         String hiddenPart = hideCharacters(answer.substring(2)); // 앞의 2글자를 제외한 부분을 숨김 처리
-        
-//        int spaceIndex = idiom.indexOf(' ');
-//        String firstPart = spaceIndex != -1 ? idiom.substring(0, spaceIndex) : idiom;
-//        String hiddenPart = hideCharacters(answer);
 
         consoleView.displayMessage("사자성어 앞 2글자 : " + firstPart);
         consoleView.displayMessage("이어질 부분을 맞춰보세요: " + hiddenPart);
@@ -86,19 +82,23 @@ public class IdiomGame implements Game {
     }
 
     private void updateScore(String username, boolean correct) {
-    	User user = gameScore.getUser(username);
+        Map<String, User> users = gameScore.getUsers();
 
-        if (user != null) { // 사용자 정보가 null이 아닌 경우에만 점수를 업데이트
+        if (users.containsKey(username)) {
+            User user = users.get(username);
             int currentScore = user.getScore();
 
             if (correct) {
-                gameScore.updateUser(username, currentScore + 300);
+                gameScore.updateUserScore(username, currentScore + 300);
+                consoleView.displayMessage(username + "님의 점수가 300점 증가하였습니다. 현재 점수: " + (currentScore + 300));
             } else {
-                gameScore.updateUser(username, currentScore - 50);
+                gameScore.updateUserScore(username, currentScore - 50);
+                consoleView.displayMessage(username + "님의 점수가 50점 감소하였습니다. 현재 점수: " + (currentScore - 50));
             }
         } else {
-            // 사용자 정보가 null인 경우에 대한 처리
-            System.out.println("사용자 정보를 찾을 수 없습니다: " + username);
+            consoleView.displayMessage("사용자 정보를 찾을 수 없습니다: " + username);
         }
     }
+
+
 }
